@@ -5,36 +5,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#66FFFF"
     tools:context="org.usablelabs.duedo.ListActivity">
 
     <include android:id="@+id/toolbar_main" layout="@layout/toolbar_main" />
+
+
+
+    <LinearLayout
+        android:layout_below="@+id/toolbar_main"
+        android:id="@+id/layout_head"
+        android:layout_width="match_parent"
+        android:background="#2E9AFE"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:text="เดือน"/>
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="90dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:text="รายรับ"/>
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="90dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:text="รายจ่าย"/>
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:text="ยอดคงเหลือ"/>
+    </LinearLayout>
 
     <ListView
         android:id="@+id/listView"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_main"
+        android:layout_below="@+id/layout_head"
         android:visibility="gone"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/no_task"
+        android:text="ไม่มีข้อมูล"
         android:id="@+id/emptyLabel"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/darker_gray"
         android:visibility="gone"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/newFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
 </RelativeLayout>

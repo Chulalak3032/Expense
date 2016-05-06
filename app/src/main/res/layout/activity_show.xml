@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.usablelabs.duedo.ShowActivity">
+    android:background="#66FFFF"
+    tools:context="org.usablelabs.duedo.ShowExpenseActivity">
 
     <include android:id="@+id/toolbar_main" layout="@layout/toolbar_main" />
 

@@ -57,7 +57,7 @@ public class ShowActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case MenuItem_EditID:
-                Intent intent = new Intent(this, FormActivity.class);
+                Intent intent = new Intent(this, Form2Activity.class);
                 intent.putExtra("id", task.getId());
                 startActivityForResult(intent, EDIT_TASK);
                 break;

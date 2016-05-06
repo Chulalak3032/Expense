@@ -2,13 +2,14 @@ package org.usablelabs.duedo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
@@ -27,8 +28,8 @@ public class FormActivity extends BaseActivity {
         setContentView(R.layout.activity_form);
         setDrawer(true);
 
-        titleEdit = (EditText) findViewById(R.id.titleEdit);
-        contentEdit = (EditText) findViewById(R.id.contentEdit);
+        titleEdit = (EditText) findViewById(R.id.dateEdit);
+        //contentEdit = (EditText) findViewById(R.id.contentEdit);
 
         long id = getIntent().getLongExtra("id", 0);
         if (id == 0) {
@@ -38,7 +39,7 @@ public class FormActivity extends BaseActivity {
             task = Task.load(Task.class, id);
             if (task != null) {
                 titleEdit.setText(task.title);
-                contentEdit.setText(task.content);
+                //contentEdit.setText(task.content);
             } else {
                 finish();
             }
@@ -81,6 +82,21 @@ public class FormActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onStart(){
+        super.onStart();
+        EditText dateEdit=(EditText)findViewById(R.id.dateEdit);
+        dateEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    DateDialog dialog=new DateDialog(v);
+                    FragmentTransaction ft=getFragmentManager().beginTransaction();
+                    dialog.show(ft,"DatePicker");
+                }
+            }
+        });
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         /* surpass all keys in activity; force the user to use form controls */
@@ -99,7 +115,7 @@ public class FormActivity extends BaseActivity {
             if (task == null)
                 task = new Task();
             task.title = titleEdit.getText().toString();
-            task.content = contentEdit.getText().toString();
+            //task.content = contentEdit.getText().toString();
             task.saveWithTimestamp();
             setResult(Activity.RESULT_OK, new Intent().putExtra("id", task.getId()));
             this.finish();

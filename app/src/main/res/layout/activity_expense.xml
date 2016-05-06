@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#CCFFFF"
+    tools:context="org.usablelabs.duedo.ExpenseActivity">
+
+    <include android:id="@+id/toolbar_main" layout="@layout/toolbar_main" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_below="@+id/toolbar_main"
+        android:background="#2E9AFE"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="เพิ่มข้อมูล"/>
+
+    <LinearLayout
+        android:layout_below="@+id/btn_add"
+        android:id="@+id/layout_head"
+        android:layout_width="match_parent"
+        android:background="#2E9AFE"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:text="วันที่"/>
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:text="หมวดหมู่"/>
+
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:text="จำนวนเงิน"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listView"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_head"
+        android:visibility="gone"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="ไม่มีข้อมูลรายจ่าย"
+        android:id="@+id/emptyLabel"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/darker_gray"
+        android:visibility="gone"/>
+
+</RelativeLayout>

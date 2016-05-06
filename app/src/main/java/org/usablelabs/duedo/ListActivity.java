@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class ListActivity extends BaseActivity {
 
@@ -28,28 +23,25 @@ public class ListActivity extends BaseActivity {
 
     private ListView listView;
     private TextView emptyLabel;
+    private TasksAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         setDrawer(false);
-        setTitle(R.string.tasks);
+        setTitle("รายรับ-รายจ่าย ของฉัน");
+
+
 
         listView = (ListView) findViewById(R.id.listView);
         emptyLabel = (TextView) findViewById(R.id.emptyLabel);
 
-        FloatingActionButton newFab = (FloatingActionButton) findViewById(R.id.newFab);
-        newFab.setImageDrawable(buildDrawable(MaterialDesignIconic.Icon.gmi_plus));
-        newFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ListActivity.this, FormActivity.class);
-                startActivityForResult(intent, NEW_TASK);
-            }
-        });
 
-        setView();
+
+        //setView();
+
+
     }
 
     @Override
@@ -77,7 +69,8 @@ public class ListActivity extends BaseActivity {
         } else {
             emptyLabel.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
-            listView.setAdapter(new TasksAdapter(this, tasks));
+            adapter = new TasksAdapter(this, tasks);
+            listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -88,22 +81,42 @@ public class ListActivity extends BaseActivity {
             });
         }
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Log.e("LOG", "onrestrat");
+        tasks = new ArrayList<Task>(Task.getAll());
+        Log.e("SIZE",tasks.size()+"");
+        adapter = new TasksAdapter(this, tasks);
+        listView.setAdapter(adapter);
+    }
 }
 
 class TasksAdapter extends ArrayAdapter<Task> {
 
+    String olddate;
+    private ArrayList<Task> alltasks;
+
     public TasksAdapter(Context context, ArrayList<Task> tasks) {
         super(context, 0, tasks);
+        alltasks = tasks;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Task task = getItem(position);
+        //Task task = getItem(position);
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_list_main, parent, false);
         }
-        TextView tv = (TextView) convertView.findViewById(android.R.id.text1);
-        tv.setText(task.title);
+        TextView tv = (TextView) convertView.findViewById(R.id.txt_title);
+        tv.setText(alltasks.get(position).title);
+
+        TextView tv2 = (TextView) convertView.findViewById(R.id.txt_content);
+        tv2.setText(alltasks.get(position).content);
+
+
         return convertView;
     }
 }

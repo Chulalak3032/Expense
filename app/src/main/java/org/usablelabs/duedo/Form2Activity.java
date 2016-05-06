@@ -1,0 +1,142 @@
+package org.usablelabs.duedo;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+
+import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
+
+public class Form2Activity extends BaseActivity {
+
+    private static final int MenuItem_SaveID = 1;
+
+    private Task task = null;
+    private EditText titleEdit; // start
+    private EditText contentEdit; // end
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_form2);
+        setDrawer(true);
+
+        titleEdit = (EditText) findViewById(R.id.dateEdit);
+        contentEdit = (EditText) findViewById(R.id.date2Edit);
+
+
+        long id = getIntent().getLongExtra("id", 0);
+        if (id == 0) {
+            setTitle(R.string.new_task);
+        } else {
+            setTitle(R.string.edit_task);
+            task = Task.load(Task.class, id);
+            if (task != null) {
+                titleEdit.setText(task.title);
+                contentEdit.setText(task.content);
+            } else {
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        addMenuItem(menu, MenuItem_SaveID, R.string.save, buildDrawable(MaterialDesignIconic.Icon.gmi_save));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (isEdited()) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                    alert.setTitle(android.R.string.dialog_alert_title);
+                    alert.setMessage(R.string.unsaved_exit_alert);
+                    alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onBackPressed();
+                        }
+                    });
+                    alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    alert.show();
+                    return true;
+                }
+                break;
+            case MenuItem_SaveID:
+                save();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void onStart(){
+        super.onStart();
+        EditText dateEdit=(EditText)findViewById(R.id.dateEdit);
+        dateEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    DateDialog dialog = new DateDialog(v);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    dialog.show(ft, "DatePicker");
+                }
+            }
+        });
+
+
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        /* surpass all keys in activity; force the user to use form controls */
+        return true;
+    }
+
+    private boolean isEdited() {
+        if (task == null)
+            return titleEdit.getText().length() > 0 || contentEdit.getText().length() > 0;
+        else
+            return !task.title.equals(titleEdit.getText().toString()) || !task.content.equals(contentEdit.getText().toString());
+    }
+
+    private void save() {
+        if (titleEdit.getText().length() > 0) {
+            if (task == null)
+                task = new Task();
+            task.title = titleEdit.getText().toString();
+            task.content = contentEdit.getText().toString();
+            task.content = contentEdit.getText().toString();
+            task.title.replace("/","-");
+            task.content.replace("/","-");
+            task.saveWithTimestamp();
+            setResult(Activity.RESULT_OK, new Intent().putExtra("id", task.getId()));
+            this.finish();
+
+        } else {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle(android.R.string.dialog_alert_title);
+            alert.setMessage(R.string.title_is_required);
+            alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            alert.show();
+        }
+    }
+}

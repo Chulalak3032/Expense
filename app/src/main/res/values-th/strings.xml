@@ -14,4 +14,5 @@
     <string name="task_title">หัวข้อ</string>
     <string name="tasks">งาน</string>
     <string name="title_is_required">ต้องใส่หัวข้อด้วย</string>
+    <string name="myperiod">ประจำเดือนของฉัน</string>
 </resources>
